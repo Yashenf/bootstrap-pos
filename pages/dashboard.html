@@ -1,0 +1,65 @@
+<!--
+    Created By : @yash
+                 4/26/2023 , Wednesday
+                 12:47 PM
+    Project :book_store
+    Contact: contact.yashen@gmail.com
+-->
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <script src="../assets/bootstrap/js/bootstrap.bundle.js" defer></script>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BookStore</title>
+</head>
+
+<body>
+    <header>
+        <div class="container-fluid">
+            <div class="row">
+                <nav class="navbar navbar-expand-lg bg-body-secondary">
+                    <div class="container-fluid">
+
+                        <a class="navbar-brand" href="#">
+                            <img src="../assets/img/pos/pos-logo.png" alt="logo" style="width: 75px; height: 50px">
+                        </a>
+
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="./orders.html" target="frame">Orders</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="./customers.html" target="frame">Customers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="./products.html" target="frame">Products</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="./placeorder.html" target="frame">Place Order</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <iframe style="width: 100%; height: calc(100vh - 70px)" src="orders.html" class="container-fluid" name="frame"></iframe>
+    </main>
+</body>
+
+</html>
