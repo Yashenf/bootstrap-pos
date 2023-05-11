@@ -17,3 +17,7 @@ Contact : contact.yashen@gmail.com
     background-size: cover;
     background-position: center;
 }
+
+a{
+    cursor: pointer;
+}
