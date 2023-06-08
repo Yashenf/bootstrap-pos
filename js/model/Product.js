@@ -1,7 +1,8 @@
 export class Product {
-    constructor(pId, desc, qty) {
+    constructor(pId, desc, price, qty) {
         this._pId = pId;
         this._desc = desc;
+        this._price=price;
         this._qtyOnHand = qty;
     }
 
@@ -19,6 +20,14 @@ export class Product {
 
     set desc(value) {
         this._desc = value;
+    }
+
+    get price(){
+        return this.price;
+    }
+
+    set price(price){
+        this._price=price;
     }
 
     get qtyOnHand() {

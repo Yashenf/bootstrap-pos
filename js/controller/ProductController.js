@@ -72,6 +72,7 @@ export class ProductController {
                         $('<th scope="row">').text(no),
                         $('<td>').text(result._pId),
                         $('<td>').text(result._desc),
+                        $('<td>').text(result._price),
                         $('<td>').text(result._qtyOnHand),
                         $('<td>').append(deleteButton)
                     )
@@ -100,7 +101,8 @@ export class ProductController {
         const pId = $("#PIdTxt").val().trim();
         const pDesc = $("#PDescTxt").val().trim();
         const qty = $("#PQtyTxt").val().trim();
-        this.saveProduct(new Product(pId, pDesc, qty));
+        const price = $("#PUnitPriceTxt").val().trim();
+        this.saveProduct(new Product(pId, pDesc,price, qty));
     }
 
     handleUpdateProduct() {
@@ -108,7 +110,8 @@ export class ProductController {
         const pId = $("#PIdTxt").val().trim();
         const pDesc = $("#PDescTxt").val().trim();
         const qty = $("#PQtyTxt").val().trim();
-        this.updateProduct(new Product(pId, pDesc, qty));
+        const price = $("#PUnitPriceTxt").val().trim();
+        this.updateProduct(new Product(pId, pDesc, price, qty));
     }
 
 
@@ -117,6 +120,7 @@ export class ProductController {
         $("#PIdTxt").val(product._pId);
         $("#PDescTxt").val(product._desc);
         $("#PQtyTxt").val(product._qtyOnHand);
+        $("#PUnitPriceTxt").val(product._price);
     }
 
     initProductTbl(productArr) {
@@ -140,6 +144,7 @@ export class ProductController {
                     $('<th scope="row">').text(no),
                     $('<td>').text(result._pId),
                     $('<td>').text(result._desc),
+                    $('<td>').text(result._price),
                     $('<td>').text(result._qtyOnHand),
                     $('<td>').append(deleteButton)
                 )
