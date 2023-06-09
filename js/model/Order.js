@@ -5,6 +5,8 @@ export class Order {
         this._products = products; // array
         this._discount = discount;
         this._tot = tot;
+        const currentDate = new Date();
+        this._date = currentDate.toLocaleDateString();
     }
 
     get ordId() {
@@ -45,5 +47,14 @@ export class Order {
 
     set tot(value) {
         this._tot = value;
+    }
+
+    get date() {
+        return this._date;
+    }
+
+    set date(val) {
+        const currentDate = new Date();
+        this._date = currentDate.toLocaleDateString();
     }
 }

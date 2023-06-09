@@ -22,6 +22,9 @@
 </head>
 
 <body onload="toDashboard()">
+
+
+
 <header>
     <div class="container-fluid">
         <div class="row">
@@ -209,7 +212,7 @@
                     <th scope="col">Options</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="orderTbl">
                 <tr>
                     <th scope="row">1</th>
                     <td>Ord-001</td>
@@ -316,14 +319,14 @@
 
                 <div class="card col-12 col-md-6 col-lg-3 d-flex align-items-center justify-content-evenly border border-dark mb-3">
 
-                    <h3>Total is : $ <span class="price">149.99</span></h3>
+                    <h3>Total is : $ <span class="price" id="totalPriceTxt">149.99</span></h3>
 
                     <div class="col-12 ">
-                        <label for="exampleFormControlInput8" class="form-label">Discount</label>
-                        <input type="text" class="form-control " id="exampleFormControlInput8" placeholder="$ 9.99">
+                        <label for="discountTxt" class="form-label">Discount</label>
+                        <input type="text" class="form-control " id="discountTxt" placeholder="2.5%">
                     </div>
 
-                    <h2 class="text-danger">SubTotal is : $ <span class="sub-tot">139.00</span></h2>
+                    <h2 class="text-danger" id="subTotal">SubTotal is : $ <span class="sub-tot">139.00</span></h2>
 
                     <div class="row col-12 d-flex justify-content-evenly mt-3">
                         <div class="btn btn-warning col-3" id="addToCartBtn">Add +</div>
@@ -446,6 +449,56 @@
     </section>
 </main>
 
+<!--model-->
+<!-- Modal -->
+<div
+        class="modal fade"
+        id="myModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true"
+>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Order Details</h5>
+
+            </div>
+            <div class="modal-body">
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Price($)</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody id="orderDetailsTbl">
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                        id="cloceOrderDeailsModelBtn"
+                >
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--mode end-->
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous">
 
@@ -455,6 +508,7 @@
 <script type="module" src="../js/controller/CustomerController.js"></script>
 <script type="module" src="../js/controller/ProductController.js"></script>
 <script type="module" src="../js/controller/PlaceOrderController.js"></script>
+<script type="module" src="../js/controller/OrderController.js"></script>
 </body>
 
 </html>
