@@ -41,6 +41,14 @@ export class ProductController {
         }
     }
 
+
+    updateProductQty(product) {
+        const index= this.findIndexByProductId(product._pId);
+        this.products[index]=product;
+    }
+
+
+
     deleteProduct(productId) {
         console.log(productId);
         this.products.splice(productId, 1);

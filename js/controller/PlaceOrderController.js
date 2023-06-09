@@ -118,6 +118,13 @@ export class PlaceOrderController {
         this.orderController.saveOrder(new Order(
             orderId,customrId,this.shoppingCart,discount,tot
         ));
+        this.shoppingCart.map((result,index)=>{
+            let obj= this.productController.products[this.productController.
+            findIndexByProductId(result.product)];
+            obj._qtyOnHand= obj._qtyOnHand-result.qty;
+            console.log("Updateble obj is ",obj);
+            this.productController.updateProductQty(result);
+        });
         console.log(this.orderController.orders);
     }
 }
