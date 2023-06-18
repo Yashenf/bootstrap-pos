@@ -188,6 +188,8 @@ export class PlaceOrderController {
             // this.shoppingCart.splice(0);
             console.log("Cart Is 2:- ", this.shoppingCart[0]);
             $('#shoppingCartTbl').empty();
+            $('#PO_CusName').val('');
+            $('#PO_CusId').val('');
             console.log(this.orderController.orders);
         }
     }
