@@ -91,8 +91,8 @@ export class PlaceOrderController {
         }
         lastOrderId++;
         let newId = lastOrderId.toString().padStart(3, '0');
-        console.log('Cus-' + newId);
-        $('#PO_OrderId').val('Cus-' + newId);
+        console.log('Ord-' + newId);
+        $('#PO_OrderId').val('Ord-' + newId);
     };
 
     addToCart() {
@@ -179,6 +179,8 @@ export class PlaceOrderController {
             ));
 
             this.productController.updateProductQty(this.shoppingCart);
+            this.orderController.setData();
+            // this.orderController.storeOrdersOnLocalStorage();
             console.log("Cart Is :- ", this.shoppingCart[0]);
             toastr.success('Order Is Successfully Done!');
             this.generateOrderId();

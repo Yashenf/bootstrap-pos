@@ -6,13 +6,48 @@ export class OrderController{
         this.orders=this.getOrdersFromLocalStorage() || [];
         console.log(this.orders);
         this.productController= new ProductController();
-        this.initOrderTbl();
+        this.initOrderTbl(this.getOrdersFromLocalStorage());
 
         $('#cloceOrderDeailsModelBtn').on('click',()=>{
             $('#myModal').modal('hide');
         });
+        this.setData();
+
     }
 
+    handleEventHandlers(){
+        $('#searchBarOrderTxt').on('input',(e)=>{
+            const searchArr=[];
+            this.getOrdersFromLocalStorage().map((result,index)=>{
+                if (
+                   result._ordId.toLowerCase().includes(e.target.value.toLowerCase()) ||
+                   result._date.toLowerCase().includes(e.target.value.toLowerCase()) ||
+                   result._cusId.toLowerCase().includes(e.target.value.toLowerCase())
+
+                ){
+                    searchArr.push(result);
+                }
+            });
+            this.initOrderTbl(searchArr);
+        });
+    }
+
+    setData(){
+        let ordersCount=0;
+        let total=0;
+        this.orders.map((result,index)=>{
+            if (result._date === new Date().toLocaleDateString()){
+                ordersCount++;
+                total+=Number(result._tot);
+            }
+        });
+        $('#dateTxt').text(new Date().toLocaleDateString());
+        $('#ordersCountTxt').text(ordersCount);
+        console.log(typeof total);
+        $('#totalRevenueTxt').text(total.toFixed(2));
+        this.storeOrdersOnLocalStorage();
+        this.initOrderTbl(this.getOrdersFromLocalStorage());
+    }
     storeOrdersOnLocalStorage() {
         localStorage.setItem('orders', JSON.stringify(this.orders));
     }
@@ -25,13 +60,13 @@ export class OrderController{
     saveOrder(order){
         this.orders.push(order);
         this.storeOrdersOnLocalStorage();
-        this.initOrderTbl();
+        this.initOrderTbl(this.orders);
     }
 
     deleteOrder(index){
         console.log("req to delete...");
         this.orders.splice(index,1);
-        this.initOrderTbl();
+        this.initOrderTbl(this.orders);
     }
 
     viewOrderDetailsModel(order){
@@ -66,12 +101,12 @@ export class OrderController{
         $('#myModal').modal('show');
     }
 
-    initOrderTbl() {
+    initOrderTbl(arr) {
         $('#orderTbl').empty();
-        /*if (!this.orders) {
+        if (!arr) {
             return;
-        }*/
-        this.orders.map((result, index) => {
+        }
+        arr.map((result, index) => {
             console.log(result);
             const deleteButton = $('<div class="btn btn-danger">delete</div>');
             deleteButton.on('click', () => {
@@ -100,3 +135,5 @@ export class OrderController{
 }
 
 const orderController= new OrderController();
+orderController.setData();
+orderController.handleEventHandlers();
