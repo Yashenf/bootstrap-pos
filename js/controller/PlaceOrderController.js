@@ -83,7 +83,12 @@ export class PlaceOrderController {
     // Generate Order Id
     generateOrderId = () => {
         let orders = this.orderController.orders;
-        let lastOrderId = Number(orders[orders.length - 1]._ordId.split('-')[1]);
+        let lastOrderId;
+        if (orders.length < 1){
+            lastOrderId=0;
+        }else {
+            lastOrderId= Number(orders[orders.length - 1]._ordId.split('-')[1]);
+        }
         lastOrderId++;
         let newId = lastOrderId.toString().padStart(3, '0');
         console.log('Cus-' + newId);
