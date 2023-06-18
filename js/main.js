@@ -100,3 +100,87 @@ const verifyCustomer = () => {
     }
 };
 
+
+
+// Verify Product Page Inputs
+
+const regexProductId = /^P-\d{3}$/;
+const verifyPId = $("#PIdTxt").on("keyup", (e) => {
+    if (regexProductId.test($("#PIdTxt").val())) {
+        $("#PIdTxt").css("border", "2px solid green");
+        $("#PIdTxtErr").css("display", "none");
+        if (e.key === "Enter") {
+            $("#PUnitPriceTxt").focus();
+        }
+    } else {
+        $("#customerIdTxt").css("border", "2px solid red");
+        $("#PIdTxtErr").css("display", "block");
+        $("#PIdTxtErr").text("wrong input format ex:- P-001");
+    }
+    verifyProduct();
+});
+
+const regexProductDesc= /^[a-zA-Z0-9\s]+$/;
+const verifyProductDesc = $("#PDescTxt").on("keyup", (e) => {
+    if (regexProductDesc.test($("#PDescTxt").val())) {
+        $("#PDescTxt").css("border", "2px solid green");
+        $("#PDescTxtErr").css("display", "none");
+        if (e.key === "Enter") {
+            $("#PUnitPriceTxt").focus();
+        }
+    } else {
+        $("#PDescTxt").css("border", "2px solid red");
+        $("#PDescTxtErr").css("display", "block");
+        $("#PDescTxtErr").text("Invalid Name");
+    }
+    verifyProduct();
+});
+
+const regexProductPrice = /^\d+(\.\d{1,2})?$/;
+const verifyProductPrice = $("#PUnitPriceTxt").on("keyup", (e) => {
+    if (regexProductPrice.test($("#PUnitPriceTxt").val())) {
+        $("#PUnitPriceTxt").css("border", "2px solid green");
+        $("#PUnitPriceTxtErr").css("display", "none");
+        if (e.key === "Enter") {
+            $("#PQtyTxt").focus();
+        }
+    } else {
+        $("#PUnitPriceTxt").css("border", "2px solid red");
+        $("#PUnitPriceTxtErr").css("display", "block");
+        $("#PUnitPriceTxtErr").text("Format is :- 99.99");
+    }
+    verifyProduct();
+});
+
+const regexProductQty = /^\d+$/;
+const verifyProductQty = $("#PQtyTxt").on("keyup", (e) => {
+    if (regexProductQty.test($("#PQtyTxt").val())) {
+        $("#PQtyTxt").css("border", "2px solid green");
+        $("#PQtyTxtErr").css("display", "none");
+        if (e.key === "Enter") {
+            $("#PQtyTxt").focus();
+        }
+    } else {
+        $("#PQtyTxt").css("border", "2px solid red");
+        $("#PQtyTxtErr").css("display", "block");
+        $("#PQtyTxtErr").text("Input Valid Number");
+    }
+    verifyProduct();
+});
+
+
+const verifyProduct = () => {
+    if (
+        regexProductId.test($("#PIdTxt").val()) &&
+        regexProductDesc.test($("#PDescTxt").val()) &&
+        regexProductPrice.test($("#PUnitPriceTxt").val())&&
+        regexProductQty.test($("#PQtyTxt").val())
+    ) {
+        $("#AddProduct").removeClass("disabled");
+        console.log('Enabled');
+    } else {
+        $("#AddProduct").addClass("disabled");
+        console.log('desabled');
+    }
+};
+

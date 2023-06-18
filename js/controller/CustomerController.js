@@ -1,9 +1,13 @@
-import { Customer } from "../model/Customer.js";
+import {Customer} from "../model/Customer.js";
 
 export class CustomerController {
     constructor() {
         this.customers = this.getCustomersFromLocalStorage() || [];
+        // Initialize customer table
+        this.initCusTbl(this.customers);
+    }
 
+    bindEventHandlers() {
         // Event handler for save customer button
         $("#saveCustomerBtn").on('click', this.handleSaveCustomer.bind(this));
 
@@ -11,23 +15,27 @@ export class CustomerController {
         $("#updateCustomerBtn").on('click', this.handleUpdateCustomer.bind(this));
 
         // Event handler for search customer text input
-        $('#searchCustomerTxt').on('keyup', (e) => {
+        $('#searchCustomerTxt').on('input', (e) => {
             this.findCustomers(e.target.value);
         });
-
-        // Initialize customer table
-        this.initCusTbl(this.customers);
     }
 
     // Method to save a customer
     saveCustomer(customer) {
-        if(this.findIndexFromCustomerId(customer._id) === -1){
+        if (this.findIndexFromCustomerId(customer._id) === -1) {
             console.log(customer);
-            this.customers.push(customer);
-            this.storeCustomersOnLocalStorage();
-            this.initCusTbl(this.customers);
-        }else {
-            alert('customer id repeated...');
+            if (confirm('Are You Sure ?')) {
+                this.customers.push(customer);
+                this.storeCustomersOnLocalStorage();
+                this.initCusTbl(this.customers);
+                // Display a success toast, with a title
+                toastr.success(customer._name + ' is Registered.');
+                return;
+            }
+            toastr.error('Something Went Wrong...');
+        } else {
+            toastr.error('customer id repeated...');
+            console.log('customer id repeated...');
         }
     }
 
@@ -35,21 +43,29 @@ export class CustomerController {
     updateCustomer(customer) {
         // Find the index of the updatable customer
         const index = this.findIndexFromCustomerId(customer.id);
-        if (index !== -1) { // Check if the customer exists
-            this.customers[index] = customer;
-            this.storeCustomersOnLocalStorage();
-            this.initCusTbl(this.customers);
-        } else {
-            alert('Wrong customer ID!');
+        if (confirm('Are You Sure?')) {
+            if (index !== -1) { // Check if the customer exists
+                this.customers[index] = customer;
+                this.storeCustomersOnLocalStorage();
+                this.initCusTbl(this.customers);
+                toastr.info(customer._name + ' is Updated.');
+            } else {
+                toastr.error('Customer id repeated or wrong...');
+            }
         }
+
     }
 
     // Method to delete a customer
     deleteCustomer(customerId) {
-        console.log(customerId);
-        this.customers.splice(customerId, 1);
-        this.storeCustomersOnLocalStorage();
-        this.initCusTbl(this.customers);
+        if (confirm('Are You Sure ?')) {
+            console.log(customerId);
+            this.customers.splice(customerId, 1);
+            this.storeCustomersOnLocalStorage();
+            this.initCusTbl(this.customers);
+            toastr.error('Customer Deleted!');
+        }
+
     }
 
     // Method to find customers based on a search string
@@ -67,7 +83,10 @@ export class CustomerController {
                     console.log('Click on table row');
                     this.setDataToTxt(result);
                 });
-                const deleteButton = $('<div class="btn btn-danger">delete</div>');
+                const deleteButton = $('<svg xmlns="http://www.w3.org/2000/svg" style="cursor: pointer; color: red" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">\n' +
+                    '  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>\n' +
+                    '  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>\n' +
+                    '</svg>');
                 deleteButton.on('click', () => {
                     this.deleteCustomer(index);
                 });
@@ -137,7 +156,10 @@ export class CustomerController {
                 console.log('Click on table row');
                 this.setDataToTxt(result);
             });
-            const deleteButton = $('<div class="btn btn-danger">delete</div>');
+            const deleteButton = $('<svg xmlns="http://www.w3.org/2000/svg" style="cursor: pointer; color: red" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">\n' +
+                '  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>\n' +
+                '  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>\n' +
+                '</svg>');
             deleteButton.on('click', () => {
                 this.deleteCustomer(index);
             });
@@ -156,3 +178,4 @@ export class CustomerController {
 }
 
 const customerController = new CustomerController();
+customerController.bindEventHandlers();

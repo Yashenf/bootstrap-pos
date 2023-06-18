@@ -8,7 +8,13 @@ export class PlaceOrderController {
     constructor() {
         this.customerController = new CustomerController();
         this.productController = new ProductController();
-        this.orderController= new OrderController();
+        this.orderController = new OrderController();
+        this.generateOrderId();
+        // Create bucket to store shopping cart
+        this.shoppingCart = [];
+    }
+
+    bindEventHandlers() {
         $('#PO_CusId').on('keyup', (e) => {
             if (e.keyCode === 13) {
                 const customer =
@@ -44,46 +50,77 @@ export class PlaceOrderController {
             }
         });
 
+        $('#pOqtyTxt').on('input', (e) => {
+            if ($('#pOqtyOnHandTxt').val() === '') {
+                alert('Select Product First!');
+                $('#pOqtyTxt').val('');
+                $('#addToCartBtn').addClass("disabled");
+                return;
+            }
+
+            if (Number(Number(e.target.value)) <= 0) {
+                alert('Cant qty is 0 or less than 0');
+                $('#pOqtyTxt').val('');
+                $('#addToCartBtn').addClass("disabled");
+                return;
+            }
+
+            if (Number($('#pOqtyOnHandTxt').val()) < Number(e.target.value)) {
+                alert('Qty Out Of Range!');
+                $('#pOqtyTxt').val('');
+                $('#addToCartBtn').addClass("disabled");
+                return;
+            } else {
+                $('#addToCartBtn').removeClass("disabled");
+            }
+        });
 
 
         $('#addToCartBtn').on('click', this.addToCart.bind(this));
-        $('#placeOrderBtn').on('click',this.handlePlaceOrder.bind(this));
-
-        //        Create bucket to store shopping cart
-        this.shoppingCart = [];
+        $('#placeOrderBtn').on('click', this.handlePlaceOrder.bind(this));
     }
+
+    // Generate Order Id
+    generateOrderId = () => {
+        let orders = this.orderController.orders;
+        let lastOrderId = Number(orders[orders.length - 1]._ordId.split('-')[1]);
+        lastOrderId++;
+        let newId = lastOrderId.toString().padStart(3, '0');
+        console.log('Cus-' + newId);
+        $('#PO_OrderId').val('Cus-' + newId);
+    };
 
     addToCart() {
         const productIndex = this.productController.findIndexByProductId($('#pOproductIdTxt').val());
-        const foundedObj= this.shoppingCart.find((e)=> e.product === $('#pOproductIdTxt').val());
+        const foundedObj = this.shoppingCart.find((e) => e.product === $('#pOproductIdTxt').val());
         console.log($('#pOproductIdTxt').val());
         console.log($('#pOqtyTxt').val());
         console.log(this.shoppingCart);
-        if (foundedObj){
-            let index= this.shoppingCart.findIndex((e)=> e.product === $('#pOproductIdTxt').val());
-            console.log("qty is "+this.shoppingCart[index].qty);
+        if (foundedObj) {
+            let index = this.shoppingCart.findIndex((e) => e.product === $('#pOproductIdTxt').val());
+            console.log("qty is " + this.shoppingCart[index].qty);
             this.shoppingCart[index].qty = Number($('#pOqtyTxt').val());
             // this.shoppingCart[index].qty=Number($('#pOqtyTxt').val());
-        }else {
+        } else {
             this.shoppingCart.push({
                 "product": this.productController.products[productIndex]._pId,
-                "qty": Number($('#pOqtyTxt').val())
+                "qty": Math.floor(Number($('#pOqtyTxt').val()))
             });
         }
         this.displayCart();
     }
 
     deleteFromCart(index) {
-        console.log("Request to delete "+index+" , "+this.shoppingCart[index]);
-        let slice  = this.shoppingCart.splice(index, 1);
-        console.log("Slice "+slice);
+        console.log("Request to delete " + index + " , " + this.shoppingCart[index]);
+        let slice = this.shoppingCart.splice(index, 1);
+        console.log("Slice " + slice);
         console.log(this.shoppingCart);
         this.displayCart();
     }
 
     displayCart() {
-        let unitPrice= 0; // row price
-        let totalPrice= 0;
+        let unitPrice = 0; // row price
+        let totalPrice = 0;
         $('#shoppingCartTbl').empty();
 
         this.shoppingCart.map((result, index) => {
@@ -92,9 +129,9 @@ export class PlaceOrderController {
             removeFromCartBtn.on('click', () => {
                 this.deleteFromCart(index);
             });
-            let arrIndex= Number(this.productController.findIndexByProductId(result.product).toFixed(2));
-            unitPrice= this.productController.products[arrIndex]._price * result.qty
-            totalPrice+=unitPrice;
+            let arrIndex = Number(this.productController.findIndexByProductId(result.product).toFixed(2));
+            unitPrice = this.productController.products[arrIndex]._price * result.qty
+            totalPrice += unitPrice;
             let no = index + 1;
             $('#shoppingCartTbl').append(
                 $('<tr>').append(
@@ -108,29 +145,51 @@ export class PlaceOrderController {
             $('#totalPriceTxt').text(totalPrice);
             $('#subTotal').text(totalPrice);
         });
+
+        $('#pOdescTxt').val('');
+        $('#pOPriceTxt').val('');
+        $('#pOqtyOnHandTxt').val('');
+        $('#pOqtyTxt').val('');
+        $('#pOproductIdTxt').val('');
     }
 
-    handlePlaceOrder(){
+    handlePlaceOrder() {
+        if ($('#PO_CusName').val() === '') {
+            alert('First thing first. Select Customer');
+            return;
+        }
+
+        if (this.shoppingCart.length < 1) {
+            alert('Add Products To Cart!');
+            return;
+        }
+
         const orderId = $('#PO_OrderId').val();
-        const customrId= $('#PO_CusId').val();
-        const discount= $('#discountTxt').val();
-        const tot= $('#totalPriceTxt').text();
-        this.orderController.saveOrder(new Order(
-            orderId,customrId,this.shoppingCart,discount,tot
-        ));
-        this.shoppingCart.map((result,index)=>{
-            let obj= this.productController.products[this.productController.
-            findIndexByProductId(result.product)];
-            obj._qtyOnHand= obj._qtyOnHand-result.qty;
-            console.log("Updateble obj is ",obj);
-            this.productController.updateProductQty(result);
-        });
-        console.log(this.orderController.orders);
+        const customrId = $('#PO_CusId').val();
+        const discount = $('#discountTxt').val();
+        const tot = $('#totalPriceTxt').text();
+        if (confirm('Are You Sure ?')) {
+            this.orderController.saveOrder(new Order(
+                orderId, customrId, this.shoppingCart, discount, tot
+            ));
+
+            this.productController.updateProductQty(this.shoppingCart);
+            console.log("Cart Is :- ", this.shoppingCart[0]);
+            toastr.success('Order Is Successfully Done!');
+            this.generateOrderId();
+            console.log("Cart Is 1 :- ", this.shoppingCart[0]);
+            // this.shoppingCart.splice(0);
+            console.log("Cart Is 2:- ", this.shoppingCart[0]);
+            $('#shoppingCartTbl').empty();
+            console.log(this.orderController.orders);
+        }
     }
 }
 
 
 const placeOrderController = new PlaceOrderController();
+
+placeOrderController.bindEventHandlers();
 
 /*
   check qty user enter and is it uneven , show error message.

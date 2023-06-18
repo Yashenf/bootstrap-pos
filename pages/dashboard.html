@@ -18,6 +18,7 @@
     <script src="../assets/bootstrap/js/bootstrap.bundle.js" defer></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../assets/styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>BookStore</title>
 </head>
 
@@ -183,7 +184,6 @@
                     <th scope="col">Date</th>
                     <th scope="col">Total ($)</th>
                     <th scope="col">Show Order</th>
-                    <th scope="col">Options</th>
                 </tr>
                 </thead>
                 <tbody id="orderTbl">
@@ -265,8 +265,8 @@
                     <h2 class="text-danger" id="subTotal">SubTotal is : $ <span class="sub-tot">139.00</span></h2>
 
                     <div class="row col-12 d-flex justify-content-evenly mt-3">
-                        <div class="btn btn-warning col-3" id="addToCartBtn">Add +</div>
-                        <div class="btn btn-success col-4" id="placeOrderBtn">Place Order</div>
+                        <div class="btn btn-warning col-3 disabled" id="addToCartBtn">Add +</div>
+                        <div class="btn btn-success col-4 " id="placeOrderBtn">Place Order</div>
                     </div>
 
                 </div>
@@ -306,23 +306,43 @@
                 <div class="col-12 col-md-6 col-lg-4 mb-3">
                     <label for="PIdTxt" class="form-label">Product ID</label>
                     <input type="text" class="form-control " id="PIdTxt" placeholder="P-001">
+                    <small
+                            class="text-danger"
+                            id="PIdTxtErr"
+                            style="display: none"
+                    ></small>
                 </div>
 
                 <div class="col-12 col-md-6 col-lg-8 mb-3">
                     <label for="PDescTxt" class="form-label">Description</label>
                     <input type="text" class="form-control " id="PDescTxt"
                            placeholder="Harry Potter 01">
+                    <small
+                            class="text-danger"
+                            id="PDescTxtErr"
+                            style="display: none"
+                    ></small>
                 </div>
 
                 <div class="col-12 col-md-6 col-lg-4 mb-3">
                     <label for="PUnitPriceTxt" class="form-label">Unit-Price</label>
                     <input type="text" class="form-control " id="PUnitPriceTxt"
                            placeholder="$ 149.00">
+                    <small
+                            class="text-danger"
+                            id="PUnitPriceTxtErr"
+                            style="display: none"
+                    ></small>
                 </div>
 
                 <div class="col-12 col-md-6 col-lg-4 mb-3">
                     <label for="PQtyTxt" class="form-label">QTY</label>
                     <input type="text" class="form-control " id="PQtyTxt" placeholder="25">
+                    <small
+                            class="text-danger"
+                            id="PQtyTxtErr"
+                            style="display: none"
+                    ></small>
                 </div>
 
             </div>
@@ -418,6 +438,9 @@
 <script type="module" src="../js/controller/ProductController.js"></script>
 <script type="module" src="../js/controller/PlaceOrderController.js"></script>
 <script type="module" src="../js/controller/OrderController.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 
 </html>

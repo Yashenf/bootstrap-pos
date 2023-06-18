@@ -92,8 +92,7 @@ export class OrderController{
                     $('<td>').text(result._cusId),
                     $('<td>').text(result._date),
                     $('<td>').text(result._tot),
-                    $('<td>').append(viewOrderBtn),
-                    $('<td>').append(deleteButton)
+                    $('<td>').append(viewOrderBtn)
                 )
             );
         });
