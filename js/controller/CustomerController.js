@@ -30,6 +30,7 @@ export class CustomerController {
                 this.initCusTbl(this.customers);
                 // Display a success toast, with a title
                 toastr.success(customer._name + ' is Registered.');
+                this.clearData()
                 return;
             }
             toastr.error('Something Went Wrong...');
@@ -52,6 +53,7 @@ export class CustomerController {
             } else {
                 toastr.error('Customer id repeated or wrong...');
             }
+            this.clearData();
         }
 
     }
@@ -142,6 +144,12 @@ export class CustomerController {
         $("#customerIdTxt").val(customer._id);
         $("#customerNameTxt").val(customer._name);
         $("#customerEmailTxt").val(customer._email);
+    }
+
+    clearData() {
+        $("#customerIdTxt").val('');
+        $("#customerNameTxt").val('');
+        $("#customerEmailTxt").val('');
     }
 
     // Method to initialize the customer table

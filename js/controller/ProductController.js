@@ -28,6 +28,7 @@ export class ProductController {
             } else {
                 toastr.error('Product Code is Duplicated!');
             }
+            this.clearData();
         }
     }
 
@@ -43,6 +44,7 @@ export class ProductController {
             } else {
                 toastr.error('Something Wnt Wrong');
             }
+            this.clearData();
         }
 
     }
@@ -144,6 +146,13 @@ export class ProductController {
         $("#PDescTxt").val(product._desc);
         $("#PQtyTxt").val(product._qtyOnHand);
         $("#PUnitPriceTxt").val(product._price);
+    }
+
+    clearData() {
+        $("#PIdTxt").val('');
+        $("#PDescTxt").val('');
+        $("#PQtyTxt").val('');
+        $("#PUnitPriceTxt").val('');
     }
 
     initProductTbl(productArr) {

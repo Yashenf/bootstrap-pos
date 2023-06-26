@@ -11,6 +11,15 @@ import Customer from "./model/Customer.js";*/
 
 const toDashboard= ()=> {
     toOrderPage();
+    const bodyElements = $('body');
+    console.log(typeof bodyElements);
+    if (bodyElements.length > 1) {
+        console.log('Multiple body elements found.');
+    } else if (bodyElements.length === 1) {
+        console.log('Single body element found.');
+    } else {
+        console.log('No body element found.');
+    }
 }
 
 const toOrderPage = ()=>{
